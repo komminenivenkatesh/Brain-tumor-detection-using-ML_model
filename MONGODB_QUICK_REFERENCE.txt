@@ -1,0 +1,229 @@
+╔════════════════════════════════════════════════════════════════╗
+║           MONGODB CONNECTION SETUP REFERENCE                    ║
+╚════════════════════════════════════════════════════════════════╝
+
+🎯 QUICK SETUP OPTIONS
+════════════════════════════════════════════════════════════════════
+
+┌─ OPTION 1: LOCAL MONGODB ─────────────────────────────────────┐
+│                                                                 │
+│  Best For: Development & Testing                              │
+│  Setup Time: 5 minutes                                        │
+│  Download: mongodb.com/try/download/community                │
+│                                                                 │
+│  Steps:                                                        │
+│  1. Download and run MongoDB MSI installer                    │
+│  2. Keep default settings (installs as Windows Service)       │
+│  3. MongoDB will start automatically                          │
+│                                                                 │
+│  Connection URL (already in .env):                           │
+│  MONGODB_URL=mongodb://localhost:27017                       │
+│                                                                 │
+│  Verify:                                                       │
+│  $ mongod                                                      │
+│  $ mongo --version                                            │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─ OPTION 2: MONGODB ATLAS (CLOUD) ⭐ RECOMMENDED ─────────────┐
+│                                                                 │
+│  Best For: Production & Easy Sharing                         │
+│  Setup Time: 10 minutes                                       │
+│  Cost: Free tier available (512MB storage)                   │
+│  Link: mongodb.com/cloud/atlas                              │
+│                                                                 │
+│  Steps:                                                        │
+│  1. Create free account at mongodb.com/cloud/atlas          │
+│  2. Create free cluster (M0 tier)                           │
+│  3. Go to Security → Database Access                         │
+│     - Add user: braintumor_user / strong-password           │
+│  4. Go to Security → Network Access                         │
+│     - Add IP: 0.0.0.0/0 (or your IP)                        │
+│  5. Click "Connect" → "Drivers" → Copy connection string    │
+│  6. Update .env:                                             │
+│                                                                 │
+│  MONGODB_URL=mongodb+srv://username:password@cluster.mongodb.net/brain_tumor_db?retryWrites=true&w=majority
+│                                                                 │
+│  Connection string format:                                    │
+│  mongodb+srv://[username]:[password]@[cluster].[hash].mongodb.net/[database]?[options]
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─ OPTION 3: DOCKER MONGODB ────────────────────────────────────┐
+│                                                                 │
+│  Best For: Easy Local Setup                                  │
+│  Setup Time: 3 minutes                                        │
+│  Prerequisites: Docker installed                            │
+│                                                                 │
+│  Command:                                                      │
+│  $ docker run -d --name brain-tumor-mongodb -p 27017:27017 \│
+│    -e MONGO_INITDB_ROOT_USERNAME=admin \                     │
+│    -e MONGO_INITDB_ROOT_PASSWORD=password123 \              │
+│    mongo:latest                                              │
+│                                                                 │
+│  Connection URL:                                             │
+│  MONGODB_URL=mongodb://admin:password123@localhost:27017/brain_tumor_db?authSource=admin
+│                                                                 │
+│  Manage:                                                       │
+│  Start:   docker start brain-tumor-mongodb                  │
+│  Stop:    docker stop brain-tumor-mongodb                   │
+│  Shell:   docker exec -it brain-tumor-mongodb mongosh \     │
+│           -u admin -p password123                            │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+📍 CONFIGURATION FILES
+════════════════════════════════════════════════════════════════════
+
+.env File Location:
+  web_app/backend/.env
+
+Example Configurations:
+
+  LOCAL:
+  MONGODB_URL=mongodb://localhost:27017
+
+  ATLAS:
+  MONGODB_URL=mongodb+srv://user:pass@cluster.mongodb.net/brain_tumor_db?retryWrites=true&w=majority
+
+  DOCKER:
+  MONGODB_URL=mongodb://admin:password@localhost:27017/brain_tumor_db?authSource=admin
+
+  REMOTE:
+  MONGODB_URL=mongodb://user:password@host:port/database
+
+🧪 TESTING CONNECTION
+════════════════════════════════════════════════════════════════════
+
+Run Python Test Script:
+  $ python test_mongodb_connection.py
+
+Expected Output:
+  ✅ Successfully connected to MongoDB!
+  📊 MongoDB Version: 5.0.x
+  🗂️ Available Databases: ...
+  📁 Collections: users, analysis_history
+  ✍️ Testing write/read operations...
+
+❌ TROUBLESHOOTING
+════════════════════════════════════════════════════════════════════
+
+Problem: "Connection refused" or "Connection timed out"
+├─ Cause: MongoDB not running
+└─ Fix: 
+   • Local: Run `mongod` or start MongoDB service
+   • Docker: `docker start brain-tumor-mongodb`
+   • Atlas: Check internet connection and firewall
+
+Problem: "Authentication failed"
+├─ Cause: Wrong username/password
+└─ Fix:
+   • Verify credentials in connection string
+   • Test in MongoDB Compass first
+   • Reset password if forgotten
+
+Problem: "IP not whitelisted" (Atlas only)
+├─ Cause: Your IP not in Network Access list
+└─ Fix:
+   • Go to Security → Network Access
+   • Add your IP or use 0.0.0.0/0 for testing
+   • Check home vs. work IP
+
+Problem: Port already in use
+├─ Cause: Another MongoDB instance running
+└─ Fix:
+   • Find process: netstat -ano | findstr :27017
+   • Kill it: taskkill /PID [PID] /F
+   • Use different port: mongodb://localhost:27018
+
+🛠️ USEFUL TOOLS
+════════════════════════════════════════════════════════════════════
+
+1. MongoDB Compass (GUI)
+   Download: mongodb.com/products/compass
+   Connect using your connection string visually
+
+2. MongoDB Shell (CLI)
+   Command: mongosh
+   Enter: mongosh "connection_string"
+
+3. MongoDB Tools
+   • mongod - Server
+   • mongosh - Interactive shell
+   • mongoexport - Export data
+   • mongoimport - Import data
+
+4. Python Testing
+   from pymongo import MongoClient
+   client = MongoClient("your_connection_string")
+   client.admin.command('ping')
+
+📊 DATABASE STRUCTURE
+════════════════════════════════════════════════════════════════════
+
+Database: brain_tumor_db
+
+Collections:
+  ├─ users
+  │  ├─ email (unique index)
+  │  ├─ username
+  │  ├─ hashed_password
+  │  ├─ created_at
+  │  └─ updated_at
+  │
+  └─ analysis_history
+     ├─ user_id (index)
+     ├─ image_path
+     ├─ analysis_result
+     ├─ timestamp (index)
+     └─ status
+
+🔒 SECURITY CHECKLIST
+════════════════════════════════════════════════════════════════════
+
+Development:
+  ✓ Use strong passwords (12+ chars, mixed case)
+  ✓ Don't commit .env to git
+  ✓ Use local or test database
+
+Production:
+  ✓ Use MongoDB Atlas or managed MongoDB
+  ✓ Enable SSL/TLS encryption
+  ✓ Restrict IP whitelist (specific IPs, not 0.0.0.0/0)
+  ✓ Enable authentication
+  ✓ Set up automated backups
+  ✓ Use role-based access control
+  ✓ Enable audit logging
+  ✓ Keep SECRET_KEY secret
+
+⚡ QUICK COMMANDS
+════════════════════════════════════════════════════════════════════
+
+Test Connection:
+  $ python test_mongodb_connection.py
+
+Setup Assistant:
+  $ .\SETUP_MONGODB.ps1
+
+Install Local MongoDB (Windows):
+  • Download: mongodb.com/try/download/community
+  • Run MSI installer
+  • Select "Install MongoDB as a Service"
+
+Run MongoDB Shell:
+  $ mongosh
+  $ use brain_tumor_db
+  $ db.users.find()
+
+🚀 NEXT STEPS
+════════════════════════════════════════════════════════════════════
+
+1. Choose MongoDB setup option (local/Atlas/Docker)
+2. Update MONGODB_URL in web_app/backend/.env
+3. Run: python test_mongodb_connection.py
+4. Restart backend: cd web_app/backend && python run_server.py
+5. Application data now persists to MongoDB
+
+═══════════════════════════════════════════════════════════════════
+             MongoDB is ready for your Brain Tumor Detection app!
+═══════════════════════════════════════════════════════════════════

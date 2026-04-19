@@ -1,0 +1,390 @@
+.panel {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.header h2 {
+  color: var(--primary-color);
+  margin: 0;
+  font-size: 1.5rem;
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.refreshBtn,
+.clearAllBtn {
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.clearAllBtn {
+  background: linear-gradient(135deg, #ff6b6b, #ff4757);
+}
+
+.refreshBtn:hover:not(:disabled),
+.clearAllBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 102, 204, 0.3);
+}
+
+.refreshBtn:disabled,
+.clearAllBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  background-color: #ffe0e0;
+  color: var(--danger-color);
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--danger-color);
+}
+
+.message {
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid;
+}
+
+.message.success {
+  background-color: #e0ffe0;
+  color: var(--success-color);
+  border-left-color: var(--success-color);
+}
+
+.message.error {
+  background-color: #ffe0e0;
+  color: var(--danger-color);
+  border-left-color: var(--danger-color);
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: white;
+  border-radius: 12px;
+  color: var(--light-text);
+}
+
+.icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.loading h3,
+.empty h3 {
+  color: var(--dark-text);
+  margin-bottom: 0.5rem;
+}
+
+.spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 102, 204, 0.2);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.timeline {
+  position: relative;
+  padding: 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--primary-color), #ccc);
+}
+
+.item {
+  position: relative;
+  margin-bottom: 1.5rem;
+  padding-left: 60px;
+  cursor: pointer;
+}
+
+.timelineDot {
+  position: absolute;
+  left: 8px;
+  top: 6px;
+  width: 24px;
+  height: 24px;
+  background: white;
+  border: 3px solid var(--primary-color);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.item:hover .timelineDot {
+  transform: scale(1.3);
+  box-shadow: 0 0 0 6px rgba(0, 102, 204, 0.2);
+}
+
+.content {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.item:hover .content {
+  box-shadow: 0 6px 16px rgba(0, 102, 204, 0.15);
+  border-left-color: var(--primary-color);
+  transform: translateX(4px);
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.fileInfo {
+  flex: 1;
+}
+
+.fileName {
+  font-weight: 600;
+  color: var(--dark-text);
+  margin: 0 0 0.25rem 0;
+  word-break: break-word;
+}
+
+.timestamp {
+  color: var(--light-text);
+  display: block;
+}
+
+.result {
+  flex-shrink: 0;
+}
+
+.badgeSmall {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.badgeSmall.tumor {
+  background-color: #ffe0e0;
+  color: var(--danger-color);
+}
+
+.badgeSmall.normal {
+  background-color: #e0ffe0;
+  color: var(--success-color);
+}
+
+.details {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.detail {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.detail .label {
+  color: var(--light-text);
+  font-weight: 500;
+}
+
+.detail .value {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.item:hover .arrow {
+  opacity: 1;
+  transform: translateY(-50%) translateX(4px);
+}
+
+.itemWrapper {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.confirmDialog {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: white;
+  border: 2px solid var(--danger-color);
+  border-radius: 8px;
+  padding: 1rem;
+  z-index: 10;
+  box-shadow: 0 8px 24px rgba(255, 75, 75, 0.3);
+  min-width: 250px;
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.confirmDialog p {
+  margin: 0 0 1rem 0;
+  color: var(--dark-text);
+  font-weight: 600;
+}
+
+.confirmButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.confirmYes,
+.confirmNo {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confirmYes {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.confirmYes:hover:not(:disabled) {
+  background-color: #ff3838;
+  transform: translateY(-2px);
+}
+
+.confirmNo {
+  background-color: #e8e8e8;
+  color: var(--dark-text);
+}
+
+.confirmNo:hover:not(:disabled) {
+  background-color: #d0d0d0;
+}
+
+.confirmYes:disabled,
+.confirmNo:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.deleteBtn {
+  padding: 0.5rem 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  color: var(--danger-color);
+}
+
+.deleteBtn:hover:not(:disabled) {
+  background-color: #ffe0e0;
+  transform: scale(1.15);
+}
+
+.deleteBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.item .actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .timeline::before {
+    left: 12px;
+  }
+
+  .timelineDot {
+    width: 20px;
+    height: 20px;
+    left: 4px;
+  }
+
+  .item {
+    padding-left: 48px;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .top {
+    flex-direction: column;
+  }
+
+  .details {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .arrow {
+    display: none;
+  }
+}

@@ -1,0 +1,11 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run BrainTumor project",
+			"type": "shell",
+			"command": "run.bat",
+			"isBackground": false
+		}
+	]
+}

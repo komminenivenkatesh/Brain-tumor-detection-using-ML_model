@@ -1,0 +1,2 @@
+Set-Location -LiteralPath "c:\Users\kommi\Desktop\BrainTumor[2]\BrainTumor"; .\run.bat
+ Set-Location -LiteralPath "C:\Users\kommi\Desktop\BrainTumor[2]\web_app\backend"

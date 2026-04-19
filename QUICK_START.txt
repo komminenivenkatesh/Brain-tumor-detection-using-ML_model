@@ -1,0 +1,131 @@
+╔═══════════════════════════════════════════════════════════════╗
+║    BRAIN TUMOR DETECTION - QUICK START REFERENCE               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+📍 ACCESS POINTS
+─────────────────────────────────────────────────────────────────
+  🌐 Application:    http://localhost:5173
+  🔌 Backend API:    http://127.0.0.1:8000
+  📚 API Docs:       http://127.0.0.1:8000/docs
+
+🚀 QUICKSTART COMMANDS
+─────────────────────────────────────────────────────────────────
+
+  FASTEST - Double-click batch file:
+  • START_PROJECT.bat
+
+  POWERSHELL - Run startup script:
+  • .\START_PROJECT.ps1
+
+  MANUAL - Terminal 1 (Backend):
+  • cd web_app/backend
+  • python run_server.py
+
+  MANUAL - Terminal 2 (Frontend):
+  • cd web_app/frontend
+  • npm run dev
+
+✨ FEATURES
+─────────────────────────────────────────────────────────────────
+  ✅ 3D Brain Visualization      - Interactive 3D MRI viewing
+  ✅ Tumor Growth Prediction     - AI-powered forecasting
+  ✅ Doctor Recommendations      - Clinical decision support
+  ✅ Performance Analytics       - Model metrics & confusion matrix
+  ✅ Voice Assistant             - Hands-free voice commands
+
+🎤 VOICE COMMANDS
+─────────────────────────────────────────────────────────────────
+  • "upload image"           - Upload MRI scan
+  • "analyze"                - Run analysis
+  • "show results"           - Display results
+  • "3d visualization"       - View 3D model
+  • "growth prediction"      - Show tumor growth forecast
+  • "doctor recommendation"  - Get specialist advice
+  • "performance metrics"    - View model accuracy
+  • "help"                   - Show available commands
+  • "exit"                   - Close application
+
+📊 API ENDPOINTS
+─────────────────────────────────────────────────────────────────
+  3D Visualization:
+    POST   /api/advanced/visualization/3d
+    GET    /api/advanced/visualization/slices
+
+  Growth Prediction:
+    POST   /api/advanced/prediction/growth
+    POST   /api/advanced/prediction/scenarios
+
+  Doctor Recommendation:
+    POST   /api/advanced/recommendation/specialist
+    POST   /api/advanced/recommendation/treatment
+
+  Performance:
+    POST   /api/advanced/performance/metrics
+    POST   /api/advanced/performance/confusion-matrix
+
+  Voice:
+    POST   /api/advanced/voice/process-command
+    GET    /api/advanced/voice/commands
+
+  Health Check:
+    GET    /api/advanced/health
+
+⚙️  CONFIGURATION
+─────────────────────────────────────────────────────────────────
+  Backend:
+    • Config: web_app/backend/app/config.py
+    • Port: 8000 (edit run_server.py to change)
+    • .env: web_app/backend/.env
+
+  Frontend:
+    • Config: web_app/frontend/vite.config.js
+    • Port: 5173 (default Vite)
+
+🔧 TROUBLESHOOTING
+─────────────────────────────────────────────────────────────────
+  Port in use?
+  $ netstat -ano | findstr :8000
+  $ taskkill /PID [PID] /F
+
+  Missing packages?
+  $ cd web_app/backend && pip install -r requirements.txt
+  $ cd web_app/frontend && npm install
+
+  TensorFlow issues?
+  $ pip install tensorflow --upgrade
+
+📁 KEY DIRECTORIES
+─────────────────────────────────────────────────────────────────
+  Backend:        web_app/backend/app/
+  Frontend:       web_app/frontend/src/
+  Models:         web_app/backend/models/
+  Uploads:        web_app/backend/uploads/
+
+📚 DOCUMENTATION
+─────────────────────────────────────────────────────────────────
+  Full Guide:  PROJECT_SETUP_GUIDE.md
+  Advanced:    web_app/ADVANCED_FEATURES.md
+  Integration: web_app/INTEGRATION_GUIDE.md
+
+⏱️  STARTUP TIMES
+─────────────────────────────────────────────────────────────────
+  Backend:    5-10 seconds  (loads TensorFlow models)
+  Frontend:   2-5 seconds   (Vite compilation)
+  Total:      10-15 seconds until ready
+
+✅ VERIFICATION
+─────────────────────────────────────────────────────────────────
+  Backend running?
+    $ curl http://127.0.0.1:8000/api/advanced/health
+
+  Frontend running?
+    $ Open http://localhost:5173 in browser
+
+╔═══════════════════════════════════════════════════════════════╗
+║              PROJECT READY - START WITH EITHER:               ║
+║                                                               ║
+║  ► Double-click: START_PROJECT.bat                           ║
+║  ► PowerShell:   .\START_PROJECT.ps1                         ║
+║                                                               ║
+║  Then open: http://localhost:5173                            ║
+╚═══════════════════════════════════════════════════════════════╝

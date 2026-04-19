@@ -1,0 +1,25 @@
+.venv/
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.Python
+**/pip-log.txt
+
+# Node
+**/node_modules/
+**/dist/
+**/.vite/
+
+# Backend runtime artifacts
+web_app/backend/venv/
+web_app/backend/uploads/
+web_app/backend/mongo-data/
+
+# Env files
+**/.env
+**/.env.*
+
+# OS
+.DS_Store
+Thumbs.db

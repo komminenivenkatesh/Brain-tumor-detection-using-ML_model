@@ -1,0 +1,423 @@
+.container {
+  padding: 2rem;
+  background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+  border-radius: 12px;
+  color: #fff;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.header {
+  margin-bottom: 2rem;
+  text-align: center;
+  border-bottom: 2px solid #e94560;
+  padding-bottom: 1rem;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #ff6b6b;
+}
+
+.header p {
+  margin: 0.5rem 0 0 0;
+  color: #b0b0b0;
+  font-size: 0.95rem;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.spinner {
+  border: 4px solid rgba(68, 255, 68, 0.2);
+  border-top: 4px solid #44ff44;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading p {
+  color: #88ff88;
+  font-size: 1rem;
+}
+
+.empty {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+  font-size: 1.1rem;
+}
+
+.errorBox {
+  background: rgba(255, 100, 100, 0.15);
+  border: 2px solid #ff6464;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  color: #ff9999;
+}
+
+.errorBox p {
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.canvas {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 2px solid #44ff44;
+  box-shadow: 0 0 20px rgba(68, 255, 68, 0.3);
+}
+
+.mriCanvas {
+  border-radius: 8px;
+  background: #0a0a0a;
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+  aspect-ratio: 9 / 10;
+}
+
+.imageInfo {
+  margin: 1.5rem 0;
+}
+
+.infoBox {
+  background: rgba(30, 30, 50, 0.8);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border-left: 4px solid #ff6464;
+}
+
+.infoBox h4 {
+  margin-top: 0;
+  color: #ff6b6b;
+  font-size: 1rem;
+}
+
+.infoBox ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  list-style: none;
+}
+
+.infoBox li {
+  margin: 0.5rem 0;
+  color: #b0b0b0;
+  font-size: 0.95rem;
+}
+
+.displayModes {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: rgba(30, 30, 50, 0.6);
+  border-radius: 10px;
+}
+
+.displayModes label {
+  display: block;
+  margin-bottom: 0.8rem;
+  color: #88ff88;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.modeButtons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.modeButtons button {
+  padding: 0.6rem 1.2rem;
+  background: rgba(68, 255, 68, 0.1);
+  border: 2px solid #44ff44;
+  color: #44ff44;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.modeButtons button:hover {
+  background: rgba(68, 255, 68, 0.2);
+  box-shadow: 0 0 10px rgba(68, 255, 68, 0.5);
+}
+
+.modeButtons button.active {
+  background: rgba(68, 255, 68, 0.3);
+  box-shadow: 0 0 15px rgba(68, 255, 68, 0.7);
+}
+
+.controls {
+  background: rgba(30, 30, 50, 0.8);
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1.5rem 0;
+  border: 1px solid #444;
+}
+
+.playbackControls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.playBtn,
+.resetBtn {
+  padding: 0.8rem 1.5rem;
+  font-size: 1.2rem;
+  border: 2px solid #44ff44;
+  background: rgba(68, 255, 68, 0.1);
+  color: #44ff44;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.playBtn:hover,
+.resetBtn:hover {
+  background: rgba(68, 255, 68, 0.3);
+  box-shadow: 0 0 15px rgba(68, 255, 68, 0.5);
+}
+
+.playBtn:active,
+.resetBtn:active {
+  transform: scale(0.95);
+}
+
+.frameSlider {
+  margin: 1rem 0;
+}
+
+.frameSlider label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #88ff88;
+}
+
+.slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 5px;
+  background: linear-gradient(to right, #444, #666);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #44ff44;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(68, 255, 68, 0.8);
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #44ff44;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 10px rgba(68, 255, 68, 0.8);
+}
+
+.speedControl {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.speedControl label {
+  font-weight: bold;
+  color: #88ff88;
+}
+
+.speedSelect {
+  padding: 0.5rem 1rem;
+  background: rgba(68, 255, 68, 0.1);
+  border: 2px solid #44ff44;
+  color: #44ff44;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.speedSelect:hover {
+  background: rgba(68, 255, 68, 0.2);
+}
+
+.windowControls {
+  background: rgba(30, 30, 50, 0.8);
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1.5rem 0;
+  border: 1px solid #ff9800;
+}
+
+.controlGroup {
+  margin-bottom: 1rem;
+}
+
+.controlGroup:last-child {
+  margin-bottom: 0;
+}
+
+.controlGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #ffaa00;
+  font-size: 0.95rem;
+}
+
+.toggles {
+  display: flex;
+  gap: 2rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  color: #88ff88;
+  font-weight: 500;
+}
+
+.toggle input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #44ff44;
+}
+
+.info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.infoSection {
+  background: rgba(30, 30, 50, 0.8);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border-left: 4px solid #44ff44;
+}
+
+.infoSection h3 {
+  margin-top: 0;
+  color: #ff6b6b;
+  font-size: 1.1rem;
+}
+
+.infoSection ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.infoSection li {
+  margin: 0.5rem 0;
+  color: #b0b0b0;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.infoSection strong {
+  color: #44ff44;
+}
+
+.nextStep {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(68, 255, 68, 0.2));
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 2px solid #ff6b6b;
+  text-align: center;
+  color: #ddd;
+  font-size: 1rem;
+  margin-top: 2rem;
+}
+
+.nextStep p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.nextStep strong {
+  color: #ff6b6b;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .info {
+    grid-template-columns: 1fr;
+  }
+
+  .speedControl {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .modeButtons {
+    flex-direction: column;
+  }
+
+  .modeButtons button {
+    width: 100%;
+  }
+
+  .mriCanvas {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .displayModes,
+  .controls,
+  .windowControls {
+    padding: 1rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: linear-gradient(135deg, #0a1f2e 0%, #0f3460 100%);
+  }
+
+  .infoSection {
+    background: rgba(20, 20, 40, 0.9);
+  }
+}
