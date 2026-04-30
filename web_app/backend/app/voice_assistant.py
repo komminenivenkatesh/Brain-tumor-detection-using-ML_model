@@ -12,12 +12,25 @@ class VoiceAssistant:
     def __init__(self):
         # Initialize speech recognition
         self.recognizer = sr.Recognizer()
-        self.microphone = sr.Microphone()
+        self.microphone = None
+        self.engine = None
+        self.audio_available = True
         
-        # Initialize text-to-speech
-        self.engine = pyttsx3.init()
-        self.engine.setProperty('rate', 150)  # Speed of speech
-        self.engine.setProperty('volume', 0.9)  # Volume (0.0 to 1.0)
+        try:
+            # Try to initialize microphone
+            self.microphone = sr.Microphone()
+        except Exception as e:
+            self.audio_available = False
+            print(f"Warning: Microphone not available: {e}")
+        
+        try:
+            # Initialize text-to-speech
+            self.engine = pyttsx3.init()
+            self.engine.setProperty('rate', 150)  # Speed of speech
+            self.engine.setProperty('volume', 0.9)  # Volume (0.0 to 1.0)
+        except Exception as e:
+            self.audio_available = False
+            print(f"Warning: Text-to-speech not available: {e}")
         
         # Define voice commands
         self.voice_commands = {
@@ -75,6 +88,13 @@ class VoiceAssistant:
         Returns:
             Dictionary with recognition result
         """
+        if not self.audio_available or not self.microphone:
+            return {
+                'success': False,
+                'error': 'Audio hardware not available on this system',
+                'error_type': 'hardware_not_available'
+            }
+        
         try:
             with self.microphone as source:
                 # Adjust for ambient noise
@@ -123,6 +143,13 @@ class VoiceAssistant:
         Returns:
             Dictionary with status
         """
+        if not self.audio_available or not self.engine:
+            return {
+                'success': False,
+                'error': 'Audio hardware not available on this system',
+                'error_type': 'hardware_not_available'
+            }
+        
         try:
             self.engine.say(text)
             self.engine.runAndWait()

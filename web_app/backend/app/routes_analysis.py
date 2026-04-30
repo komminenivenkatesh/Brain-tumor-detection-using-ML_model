@@ -92,10 +92,30 @@ async def predict_tumor(
         return response
     
     except Exception as e:
-        logger.error(f"❌ Prediction failed: {str(e)}")
+        error_msg = str(e)
+        logger.error(f"❌ Prediction failed: {error_msg}")
+        
+        # Check if this is a TensorFlow DLL error or classification model not loaded
+        if "DLL load failed" in error_msg or "Application Control policy has blocked" in error_msg or "Classification model not loaded" in error_msg:
+            # Import here to check if TensorFlow has a DLL error
+            try:
+                from app.ml_model import _tensorflow_error
+                if _tensorflow_error and ("DLL load failed" in _tensorflow_error or "Application Control policy" in _tensorflow_error):
+                    raise HTTPException(
+                        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                        detail="TensorFlow service unavailable: System security policy is blocking machine learning model. Please contact your IT administrator."
+                    )
+            except:
+                pass
+            
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="TensorFlow service unavailable: System security policy is blocking machine learning model. Please contact your IT administrator."
+            )
+        
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Prediction failed: {str(e)}"
+            detail=f"Prediction failed: {error_msg}"
         )
 
 @router.get("/history", response_model=AnalysisHistoryResponse)

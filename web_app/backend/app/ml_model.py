@@ -1,12 +1,29 @@
 import cv2
 import numpy as np
-import tensorflow as tf
-from tensorflow.keras.models import model_from_json
 import os
 from app.config import MODEL_DIR, PIXEL_SPACING_CM, SUBTYPE_MODEL_JSON, SUBTYPE_WEIGHTS_H5
 import logging
 
 logger = logging.getLogger(__name__)
+
+# Lazy import TensorFlow to defer DLL loading
+_tensorflow_imported = False
+_tensorflow_error = None
+
+def _import_tensorflow():
+    global _tensorflow_imported, _tensorflow_error
+    if _tensorflow_imported:
+        return
+    try:
+        global tf
+        import tensorflow as tf
+        from tensorflow.keras.models import model_from_json
+        _tensorflow_imported = True
+        logger.info("✅ TensorFlow imported successfully")
+    except ImportError as e:
+        _tensorflow_error = str(e)
+        logger.error(f"⚠️ TensorFlow import failed: {_tensorflow_error}")
+        _tensorflow_imported = False
 
 class TumorDetectionModel:
     def __init__(self):
@@ -20,36 +37,62 @@ class TumorDetectionModel:
     def load_models(self):
         """Load both classification and segmentation models"""
         try:
+            # Lazy-load TensorFlow
+            _import_tensorflow()
+            
+            if _tensorflow_error:
+                logger.warning(f"⚠️ TensorFlow not available: {_tensorflow_error}")
+                logger.info("Models will not be loaded. API will work for other functions.")
+                return
+            
             logger.info(f"Loading models from {MODEL_DIR}")
+            # Import here after lazy loading
+            from tensorflow.keras.models import model_from_json
+            import tensorflow as tf_lazy
+            
             # Load classification model
             classification_json_path = os.path.join(MODEL_DIR, "model.json")
             classification_weights_path = os.path.join(MODEL_DIR, "model_weights.h5")
             
             if os.path.exists(classification_json_path) and os.path.exists(classification_weights_path):
-                with open(classification_json_path, 'r') as json_file:
-                    loaded_model_json = json_file.read()
-                    self.classification_model = model_from_json(
-                        loaded_model_json,
-                        custom_objects={"Sequential": tf.keras.Sequential}
-                    )
-                self.classification_model.load_weights(classification_weights_path)
-                self.classification_model.make_predict_function()
-                logger.info("Classification model loaded successfully")
+                try:
+                    with open(classification_json_path, 'r') as json_file:
+                        loaded_model_json = json_file.read()
+                        self.classification_model = model_from_json(
+                            loaded_model_json,
+                            custom_objects={"Sequential": tf_lazy.keras.Sequential}
+                        )
+                    self.classification_model.load_weights(classification_weights_path)
+                    self.classification_model.make_predict_function()
+                    logger.info("✅ Classification model loaded successfully")
+                except Exception as e:
+                    logger.warning(f"⚠️ Classification model load failed ({str(e)}). Trying alternative loading method...")
+                    try:
+                        # Alternative: Try loading H5 directly
+                        self.classification_model = tf_lazy.keras.models.load_model(classification_weights_path)
+                        logger.info("✅ Classification model loaded via H5 direct load")
+                    except Exception as e2:
+                        logger.warning(f"⚠️ Classification model load failed with H5 direct load too: {str(e2)}")
+                        self.classification_model = None
             
             # Load segmentation model
             segmentation_json_path = os.path.join(MODEL_DIR, "segmented_model.json")
             segmentation_weights_path = os.path.join(MODEL_DIR, "segmented_weights.h5")
             
             if os.path.exists(segmentation_json_path) and os.path.exists(segmentation_weights_path):
-                with open(segmentation_json_path, 'r') as json_file:
-                    loaded_model_json = json_file.read()
-                    self.segmentation_model = model_from_json(
-                        loaded_model_json,
-                        custom_objects={"Model": tf.keras.Model}
-                    )
-                self.segmentation_model.load_weights(segmentation_weights_path)
-                self.segmentation_model.make_predict_function()
-                logger.info("Segmentation model loaded successfully")
+                try:
+                    with open(segmentation_json_path, 'r') as json_file:
+                        loaded_model_json = json_file.read()
+                        self.segmentation_model = model_from_json(
+                            loaded_model_json,
+                            custom_objects={"Model": tf_lazy.keras.Model}
+                        )
+                    self.segmentation_model.load_weights(segmentation_weights_path)
+                    self.segmentation_model.make_predict_function()
+                    logger.info("✅ Segmentation model loaded successfully")
+                except Exception as e:
+                    logger.warning(f"⚠️ Segmentation model load failed: {str(e)}")
+                    self.segmentation_model = None
             else:
                 logger.warning(f"Segmentation model files not found at {segmentation_json_path} or {segmentation_weights_path}")
 
@@ -60,18 +103,22 @@ class TumorDetectionModel:
             logger.info(f"  - Weights exist: {os.path.exists(subtype_weights_path)}")
 
             if os.path.exists(subtype_json_path) and os.path.exists(subtype_weights_path):
-                logger.info("Loading subtype model...")
-                with open(subtype_json_path, 'r') as json_file:
-                    loaded_model_json = json_file.read()
-                self.subtype_model = model_from_json(
-                    loaded_model_json,
-                    custom_objects={"Sequential": tf.keras.Sequential}
-                )
-                self.subtype_model.load_weights(subtype_weights_path)
-                self.subtype_model.make_predict_function()
-                logger.info("✅ Subtype model loaded successfully!")
+                try:
+                    logger.info("Loading subtype model...")
+                    with open(subtype_json_path, 'r') as json_file:
+                        loaded_model_json = json_file.read()
+                    self.subtype_model = model_from_json(
+                        loaded_model_json,
+                        custom_objects={"Sequential": tf_lazy.keras.Sequential}
+                    )
+                    self.subtype_model.load_weights(subtype_weights_path)
+                    self.subtype_model.make_predict_function()
+                    logger.info("✅ Subtype model loaded successfully!")
+                except Exception as e:
+                    logger.warning(f"⚠️ Subtype model load failed: {str(e)}")
+                    self.subtype_model = None
             else:
-                logger.warning(f"⚠️  Subtype model files not found. Subtype classification will be disabled.")
+                logger.warning(f"⚠️ Subtype model files not found. Subtype classification will be disabled.")
         except Exception as e:
             logger.error(f"Error loading models: {str(e)}")
             import traceback
@@ -274,7 +321,19 @@ def get_tumor_model():
 
 def get_model_status() -> dict:
     """Return model readiness without triggering lazy model load."""
-    global _tumor_model
+    global _tumor_model, _tensorflow_error
+
+    # Check if TensorFlow has an import error
+    if _tensorflow_error:
+        return {
+            "loaded": False,
+            "state": "tensorflow_blocked",
+            "classification_loaded": False,
+            "segmentation_loaded": False,
+            "subtype_loaded": False,
+            "error": _tensorflow_error,
+            "message": "⚠️ TensorFlow blocked by Application Control policy. Please contact your IT administrator to allow TensorFlow DLL files."
+        }
 
     if _tumor_model is None:
         return {
