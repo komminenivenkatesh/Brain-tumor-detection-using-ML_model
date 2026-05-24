@@ -1,0 +1,15 @@
+{
+  "framework": "vite",
+  "buildCommand": "cd web_app/frontend && npm run build",
+  "outputDirectory": "web_app/frontend/dist",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://braintumor-backend.onrender.com/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

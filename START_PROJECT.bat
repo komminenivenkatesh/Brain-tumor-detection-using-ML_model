@@ -15,7 +15,7 @@ echo.
 REM Get current directory
 setlocal enabledelayedexpansion
 set "projectRoot=%~dp0"
-set "venvPython=%projectRoot%.venv\Scripts\python.exe"
+set "venvPython=%projectRoot%web_app\backend\venv_clean\Scripts\python.exe"
 
 REM Start Backend API Server
 echo Starting Backend API Server...

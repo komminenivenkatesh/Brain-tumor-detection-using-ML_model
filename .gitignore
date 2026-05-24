@@ -23,3 +23,13 @@ web_app/backend/mongo-data/
 # OS
 .DS_Store
 Thumbs.db
+
+# Virtual Environments
+venv/
+venv_clean/
+web_app/backend/venv_clean/
+
+# Datasets
+Augmented_Dataset/
+testImages/
+bone_tumor_dataset/
